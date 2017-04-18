@@ -2,6 +2,7 @@ import {
     AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy,
     Output, SimpleChanges, ViewChild, ViewEncapsulation, Renderer, OnInit
 } from '@angular/core';
+import {NgControl} from '@angular/forms';
 
 import { Select2OptionData } from './ng2-select2.interface';
 
@@ -42,7 +43,7 @@ export class Select2Component implements AfterViewInit, OnChanges, OnDestroy, On
     private element: JQuery = undefined;
     private check: boolean = false;
 
-    constructor(private renderer: Renderer) { }
+    constructor(private renderer: Renderer, private ngControl: NgControl) { }
 
     ngOnInit() {
         if(this.cssImport) {
@@ -72,6 +73,8 @@ export class Select2Component implements AfterViewInit, OnChanges, OnDestroy, On
                 value: newValue,
                 data: this.element.select2('data')
             });
+
+            this.ngControl.control.setValue(newValue);
         }
 
         if(changes['value'] && changes['value'].previousValue !== changes['value'].currentValue) {
@@ -83,6 +86,8 @@ export class Select2Component implements AfterViewInit, OnChanges, OnDestroy, On
                 value: newValue,
                 data: this.element.select2('data')
             });
+
+            this.ngControl.control.setValue(newValue);
         }
 
         if(changes['disabled'] && changes['disabled'].previousValue !== changes['disabled'].currentValue) {
@@ -103,6 +108,8 @@ export class Select2Component implements AfterViewInit, OnChanges, OnDestroy, On
                 value: this.element.val(),
                 data: this.element.select2('data')
             });
+
+            this.ngControl.control.setValue(this.element.val());
         });
     }
 
